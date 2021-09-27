@@ -47,11 +47,10 @@ public class PaymentServiceTest {
 	
 	@Test
 	public void testGetAllTransactions() {
-		Mockito.when(repository.findAll()).thenReturn(getTransaction());
-//		Mockito.when(mapper.transform(getTransactionList())).thenReturn(getTransactionResponses());
-		
-		List<TransactionResponse> actual = paymentService.getAllTransactions();
 		List<TransactionResponse> expected = getTransactionResponses();
+		Mockito.when(repository.findAll()).thenReturn(getTransaction());
+		Mockito.when(mapper.transform(getTransaction())).thenReturn(expected); 
+		List<TransactionResponse> actual = paymentService.getAllTransactions();
 		assertEquals(expected,actual);
 	}
 
@@ -76,7 +75,7 @@ public class PaymentServiceTest {
 	public void testDeleteTransaction() {
 	}
 	
-	private Iterable<Transactions> getTransaction(){
+	private List<Transactions> getTransaction(){
 		Transactions t1 = Transactions
 									.builder()
 										.amount(new Float(100.00))
