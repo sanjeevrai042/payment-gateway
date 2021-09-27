@@ -1,16 +1,20 @@
 package com.cds.demo.paymentserver.service;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import com.cds.demo.paymentserver.dao.TransactionRepository;
 import com.cds.demo.paymentserver.dto.TransactionRequest;
@@ -40,14 +44,10 @@ public class PaymentService {
 	 */
 	public List<TransactionResponse> getAllTransactions() {
 		logger.info("going to get all records");
-		Iterable<Transactions>  iterable = repository.findAll();
-		List<Transactions> transactionsList = 	StreamSupport
-													.stream(Spliterators.spliteratorUnknownSize(iterable.iterator(), 
-															Spliterator.SORTED), false)
-												.collect(Collectors.toList());
-	  return mapper.transform(transactionsList);
-		 
+		List<Transactions> transactionsList = repository.findAll();
+		return mapper.transform(transactionsList);
 	}
+	
 	
 	/**
 	 * Get a transaction 
@@ -109,5 +109,4 @@ public class PaymentService {
 	public void deleteTransaction(Integer id) {
 		repository.deleteById(id);
 	}
-	
 }
